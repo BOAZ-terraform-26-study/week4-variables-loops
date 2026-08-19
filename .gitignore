@@ -46,3 +46,6 @@ lecture/build-pdf.sh
 lecture/style.css
 lecture/*.html
 lecture/fonts/
+
+# 강사 전용 문서 (배포하지 않습니다)
+lecture/강사스크립트.md
