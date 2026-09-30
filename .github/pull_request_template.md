@@ -16,7 +16,7 @@
 - [ ] `count-demo`도 `terraform destroy` 했습니다
 - [ ] week3에서 만든 S3·DynamoDB는 **지우지 않았습니다** (7주차까지 유지)
 - [ ] `git diff`로 자격증명 · `terraform.tfvars` · `*.tfstate` · `state.json` · `*.pem`이 커밋되지 않았는지 확인
-- [ ] 스크린샷과 로그의 계정번호 12자리 · 공인 IP를 가렸습니다
+- [ ] 스크린샷과 로그의 계정번호 12자리 · 공인 IP를 숨겼습니다
 - [ ] `submissions/<id>/observations.md`에 `[관찰 ✍️]` 답을 적었습니다 (A-2 · A-6 · B-4 · B-6 · C-3)
 - [ ] `practice/` 아래 파일을 고치지 않았습니다 (`git diff --name-only origin/main`으로 확인)
 

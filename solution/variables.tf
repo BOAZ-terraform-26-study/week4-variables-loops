@@ -1,6 +1,6 @@
 # ---------------------------------------------------------------------------
-# variables.tf: 이번 주의 주인공입니다.
-# week3 까지는 10.0.0.0/16 · 10.0.1.0/24 · t3.micro 가 코드에 박혀 있었습니다.
+# variables.tf: 이번 주의 핵심 파일입니다.
+# week3 까지는 10.0.0.0/16 · 10.0.1.0/24 · t3.micro 가 코드에 직접 적혀 있었습니다.
 # 그 값들을 전부 여기로 올리고, 잘못된 값이 apply 까지 내려가지 못하게 validation 을 겁니다.
 # ---------------------------------------------------------------------------
 
@@ -37,7 +37,7 @@ variable "my_ip" {
   sensitive = true
 
   # 코드에서 "${var.my_ip}/32" 로 조립하므로, 여기에 이미 /32 가 붙어 있으면
-  # "1.2.3.4/32/32" 가 되어 아래 cidrnetmask() 가 실패한다.
+  # "1.2.3.4/32/32" 가 되어 아래 cidrnetmask() 가 실패합니다.
   validation {
     condition     = can(cidrnetmask("${var.my_ip}/32"))
     error_message = "my_ip는 1.2.3.4 처럼 순수 IPv4여야 합니다. /32나 CIDR을 넣지 마세요. (curl -4 ifconfig.me)"
@@ -102,7 +102,7 @@ variable "subnets" {
     error_message = "subnets 의 cidr 은 10.0.1.0/24 같은 CIDR 표기여야 합니다."
   }
 
-  # CIDR 이 겹치면 apply 한복판에서 InvalidSubnet.Conflict 로 죽습니다. 미리 막습니다.
+  # CIDR 이 겹치면 apply 한복판에서 InvalidSubnet.Conflict 오류로 실패합니다. 미리 차단합니다.
   validation {
     condition     = length(distinct([for s in values(var.subnets) : s.cidr])) == length(var.subnets)
     error_message = "subnets 의 cidr 이 서로 겹치거나 중복됩니다. 항목마다 다른 대역을 쓰세요."

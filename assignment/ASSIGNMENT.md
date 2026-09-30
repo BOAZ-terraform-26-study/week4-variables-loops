@@ -8,19 +8,19 @@
 
 ## 목표
 
-이미 `count`로 만들어 apply 까지 끝낸 리소스를 `for_each`로 옮깁니다. 재생성 없이 옮기는 것이 조건입니다.
+이미 `count`로 생성하여 apply 까지 완료한 리소스를 `for_each`로 이동합니다. 재생성 없이 이동하는 것이 조건입니다.
 
-실습 A-2에서 목록 가운데를 지웠을 때 `count` 쪽이 교체되는 것을 봤습니다. 그러면 이미 운영 중인 코드를 `for_each`로 바꾸려고 할 때도 같은 일이 일어납니다. 그냥 바꾸면 리소스가 전부 지워지고 다시 만들어집니다. 이 과제는 그 상태에서 빠져나오는 방법을 찾는 것입니다.
+실습 A-2에서 목록 중간을 삭제했을 때 `count` 쪽이 교체되는 것을 확인했습니다. 그러면 이미 운영 중인 코드를 `for_each`로 변경하려고 할 때도 같은 일이 발생합니다. 별도 조치 없이 변경하면 리소스가 모두 제거되고 다시 생성됩니다. 이 과제는 그 상황에서 벗어나는 방법을 찾는 것입니다.
 
-무과금 샌드박스에서 합니다. AWS 자격증명도 필요 없습니다.
+무과금 샌드박스에서 수행합니다. AWS 자격증명도 필요하지 않습니다.
 
 ## 코드로 해야 하는 것
 
 1. `practice/count-demo/`를 `submissions/{본인-github-id}/count-demo/`로 복사합니다.
-2. `terraform_data.by_count`를 `count`인 상태로 `apply` 합니다. `terraform state list`를 `state-before.txt`로 저장합니다. 주소가 `[0]` `[1]` `[2]`여야 합니다.
-3. `by_count`를 `for_each = toset(var.names)`로 바꿉니다. 이 상태로 `plan`을 떠서 `plan-naive.txt`로 저장합니다. 여기서 몇 개가 지워지고 몇 개가 새로 만들어지는지 보세요.
-4. 재생성이 일어나지 않도록 고칩니다. `plan`이 `Plan: 0 to add, 0 to change, 0 to destroy.`가 되어야 합니다. 그 출력을 `plan-fixed.txt`로 저장합니다.
-5. `apply` 한 뒤 `terraform state list`를 `state-after.txt`로 저장합니다. 주소가 `["alpha"]` 형태여야 하고, 리소스는 새로 만들어지지 않았어야 합니다.
+2. `terraform_data.by_count`를 `count` 상태로 `apply` 합니다. `terraform state list` 출력을 `state-before.txt`로 저장합니다. 주소가 `[0]` `[1]` `[2]`여야 합니다.
+3. `by_count`를 `for_each = toset(var.names)`로 변경합니다. 이 상태로 `plan`을 실행하여 `plan-naive.txt`로 저장합니다. 여기서 몇 개가 제거되고 몇 개가 새로 생성되는지 확인하세요.
+4. 재생성이 발생하지 않도록 수정합니다. `plan`이 `Plan: 0 to add, 0 to change, 0 to destroy.`가 되어야 합니다. 그 출력을 `plan-fixed.txt`로 저장합니다.
+5. `apply` 후 `terraform state list` 출력을 `state-after.txt`로 저장합니다. 주소가 `["alpha"]` 형태여야 하고, 리소스는 새로 생성되지 않았어야 합니다.
 6. 실습에서 만든 `practice/` 스택은 `destroy` 되어 있어야 합니다.
 
 > [!TIP]
@@ -28,7 +28,7 @@
 > 힌트가 필요하면 `terraform state mv --help`와 Terraform 문서의 [Refactoring](https://developer.hashicorp.com/terraform/language/modules/develop/refactoring)을 보세요.
 
 > [!IMPORTANT]
-> 3번의 `plan`은 반드시 `apply`를 한 뒤에 떠야 합니다. state 가 비어 있으면 그냥 생성 계획만 나와서 차이가 보이지 않습니다.
+> 3번의 `plan`은 반드시 `apply`를 마친 뒤에 실행해야 합니다. state 가 비어 있으면 생성 계획만 나와서 차이가 보이지 않습니다.
 
 > [!CAUTION]
 > 이 과제는 `terraform_data`로만 합니다. AWS 리소스로 연습하지 마세요. 실수하면 요금이 나갑니다.
@@ -55,7 +55,7 @@
 > [!CAUTION]
 > `terraform.tfvars` · `terraform.tfstate` · `*.backup` · `backend.hcl` · `.pem` 파일은 올리지 않습니다. `.gitignore`가 막고 있지만 푸시 전에 `git status`로 한 번 더 확인하세요. 마스킹 명령은 실습워크북 C-4에 있습니다.
 >
-> `practice/`를 직접 고쳐 올리지 마세요. 머지되는 순간 다음 사람의 빈칸이 사라집니다.
+> `practice/`를 직접 수정하여 올리지 마세요. 머지되는 순간 다음 사람의 빈칸이 사라집니다.
 
 ## 다음 주 예습
 

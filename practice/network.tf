@@ -1,26 +1,26 @@
 # ---------------------------------------------------------------------------
 # network.tf: VPC / subnet(N개) / IGW / route table / association(N개)
 #
-# week3 과 리소스 종류는 같습니다. 달라진 것은 서브넷과 연결이 for_each 로
-# 맵의 항목 수만큼 늘어난다는 점 하나입니다. 채우고 나면 이 파일이 리소스 7개를 만듭니다.
+# week3 과 리소스 종류는 같습니다. 달라진 점은 서브넷과 연결을 for_each 로 생성하므로
+# 변수의 항목 수만큼 늘어난다는 것입니다. 완성 후 이 파일이 리소스 7개를 만듭니다.
 #
 # 실습워크북 B-1 / B-2 를 따라 TODO ⑦⑧ 을 채우세요.
 # ---------------------------------------------------------------------------
 
-# 이 계정에서 실제로 쓸 수 있는 AZ 목록을 AWS에 물어본다.
-# week4 에서는 AZ 를 var.subnets 에 직접 적기 때문에, 이 데이터 소스는
-# 만드는 데 쓰지 않고 아래 precondition 에서 "그 AZ 가 이 계정에 있는가"를 검사하는 데 쓴다.
+# 이 계정에서 사용 가능한 가용 영역(AZ) 목록을 조회합니다.
+# week4 에서는 AZ 를 var.subnets 에 직접 입력하므로, 이 데이터 소스는
+# 리소스 생성에 사용하지 않고 아래 precondition 에서 "그 AZ 가 이 계정에서 사용 가능한가"를 검증하는 데 사용합니다.
 data "aws_availability_zones" "available" {
   state = "available"
 }
 
 resource "aws_vpc" "main" {
-  cidr_block           = var.vpc_cidr # week3 까지 "10.0.0.0/16" 이 박혀 있던 자리
+  cidr_block           = var.vpc_cidr # week3 까지 "10.0.0.0/16" 이 직접 적혀 있던 자리
   enable_dns_support   = true
   enable_dns_hostnames = true
 
-  # Project · Study · Week · ManagedBy · Purpose 는 provider 의 default_tags 가 붙인다.
-  # 여기에는 리소스마다 달라지는 Name 만 적는다.
+  # Project · Study · Week · ManagedBy · Purpose 는 provider 의 default_tags 가 붙입니다.
+  # 여기에는 리소스마다 달라지는 Name 만 적습니다.
   tags = { Name = "${local.name_prefix}-vpc" }
 }
 
@@ -33,10 +33,10 @@ resource "aws_vpc" "main" {
 #     aws_subnet.public["a"]      aws_subnet.public["c"]
 #   그래서 맵에서 항목 하나를 지워도 나머지 항목의 주소가 밀리지 않습니다.
 #   count 였다면 [0] [1] 로 기록되고, 가운데를 지우는 순간 뒤가 전부 재생성됩니다.
-#   그 차이는 count-demo 에서 이미 봤습니다 (실습워크북 A-2).
+#   그 차이는 count-demo 에서 이미 확인했습니다 (실습워크북 A-2).
 #
-#   lifecycle 블록은 지우지 말고 그대로 두세요. var.subnets 에 손으로 적은 AZ 가
-#   이 계정에 실제로 있는지 plan 단계에서 검사합니다. 없으면 apply 중에 죽습니다.
+#   lifecycle 블록은 지우지 말고 그대로 두세요. var.subnets 에 직접 적은 AZ 가
+#   이 계정에 실제로 있는지 plan 단계에서 검사합니다. 없으면 apply 중에 실패합니다.
 #
 # resource "aws_subnet" "public" {
 #   for_each = var.subnets
@@ -63,8 +63,8 @@ resource "aws_internet_gateway" "gw" {
   tags = { Name = "${local.name_prefix}-igw" }
 }
 
-# 라우트 테이블은 서브넷마다 만들지 않는다. 서브넷 2개가 같은 테이블 하나를 공유한다.
-# for_each 를 쓸 자리와 안 쓸 자리를 가르는 기준은 "항목마다 값이 달라지는가" 이다.
+# 라우트 테이블은 서브넷마다 만들지 않습니다. 서브넷 2개가 같은 테이블 하나를 공유합니다.
+# for_each 를 사용할 자리와 사용하지 않을 자리를 구분하는 기준은 "항목마다 값이 달라지는가"입니다.
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id
 

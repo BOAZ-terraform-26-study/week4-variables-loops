@@ -37,7 +37,7 @@ resource "terraform_data" "by_count" {
 # for_each: set 의 값 자체가 key 가 됩니다.
 #   terraform_data.by_for_each["alpha"]  ["bravo"]  ["charlie"]
 #
-# for_each 에는 map 이나 set 만 넣을 수 있습니다. list 를 그냥 넣으면
+# for_each 에는 map 이나 set 만 넣을 수 있습니다. list 를 변환 없이 넣으면
 # `Invalid for_each argument` 가 나므로 toset() 으로 바꿔서 넣습니다.
 # ---------------------------------------------------------------------------
 resource "terraform_data" "by_for_each" {

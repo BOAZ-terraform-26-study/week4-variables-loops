@@ -1,4 +1,4 @@
-# 복사해서 terraform.tfvars 로 저장하고 값을 채우세요 (terraform.tfvars는 커밋 금지).
+# 복사해서 terraform.tfvars 로 저장하고 값을 채우세요. terraform.tfvars는 커밋하지 마세요.
 region = "ap-northeast-2"
 
 # week4 용 이름을 새로 정합니다. week3 의 project_name 과 달라도 됩니다.

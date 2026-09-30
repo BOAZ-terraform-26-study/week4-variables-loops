@@ -1,6 +1,6 @@
 # ---------------------------------------------------------------------------
-# variables.tf: 이번 주의 주인공입니다.
-# week3 까지는 10.0.0.0/16 · 10.0.1.0/24 · t3.micro 가 코드에 박혀 있었습니다.
+# variables.tf: 이번 주의 핵심 파일입니다.
+# week3 까지는 10.0.0.0/16 · 10.0.1.0/24 · t3.micro 가 코드에 직접 적혀 있었습니다.
 # 그 값들을 전부 여기로 올리고, 잘못된 값이 apply 까지 내려가지 못하게 validation 을 겁니다.
 #
 # 실습워크북 A-4 / A-5 를 따라 TODO ②③④ 를 채우세요.
@@ -39,7 +39,7 @@ variable "my_ip" {
   #   대신 이 값을 참조하는 output 에도 sensitive 를 붙여야 합니다. outputs.tf 의 ⑩.
 
   # 코드에서 "${var.my_ip}/32" 로 조립하므로, 여기에 이미 /32 가 붙어 있으면
-  # "1.2.3.4/32/32" 가 되어 아래 cidrnetmask() 가 실패한다.
+  # "1.2.3.4/32/32" 가 되어 아래 cidrnetmask() 가 실패합니다.
   validation {
     condition     = can(cidrnetmask("${var.my_ip}/32"))
     error_message = "my_ip는 1.2.3.4 처럼 순수 IPv4여야 합니다. /32나 CIDR을 넣지 마세요. (curl -4 ifconfig.me)"

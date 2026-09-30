@@ -6,7 +6,7 @@
 # ---------------------------------------------------------------------------
 
 # 이름 패턴을 'al2023-ami-2023.*' 로 시작까지 고정하는 이유는 week3 개념워크북 15번에 있습니다.
-# 느슨하게 두면 ECS 전용 AMI(루트 볼륨 30GiB)가 후보에 들어와 apply 가 실패합니다.
+# 느슨하게 두면 ECS 전용 AMI(루트 볼륨 30GiB)가 후보에 포함되어 apply 가 실패합니다.
 data "aws_ami" "al2023" {
   most_recent = true
   owners      = ["amazon"]
@@ -17,7 +17,7 @@ data "aws_ami" "al2023" {
   }
   filter {
     name   = "architecture"
-    values = ["x86_64"] # instance_type(t3.micro)과 반드시 일치해야 한다
+    values = ["x86_64"] # instance_type(t3.micro)과 반드시 일치해야 합니다
   }
   filter {
     name   = "virtualization-type"
@@ -46,8 +46,8 @@ resource "aws_security_group" "web" {
     to_port     = 22
     protocol    = "tcp"
 
-    # var.my_ip 가 sensitive 이므로, 이 규칙은 plan 출력에서 (sensitive value) 로 가려진다.
-    # 값이 안 보이는 것이지 안 들어간 것이 아니다. 0.0.0.0/0 으로 열지 마세요.
+    # var.my_ip 가 sensitive 이므로, 이 규칙은 plan 출력에서 (sensitive value) 로 표시됩니다.
+    # 값이 보이지 않는 것이지 실제로는 적용됩니다. 0.0.0.0/0 으로 열지 마세요.
     cidr_blocks = ["${var.my_ip}/32"]
   }
 
@@ -55,7 +55,7 @@ resource "aws_security_group" "web" {
     description = "all outbound"
     from_port   = 0
     to_port     = 0
-    protocol    = "-1" # 모든 프로토콜
+    protocol    = "-1" # 모든 프로토콜 허용
     cidr_blocks = ["0.0.0.0/0"]
   }
 
@@ -66,23 +66,23 @@ resource "aws_security_group" "web" {
 # 여기에 for_each 를 붙이지 마세요.
 #   서브넷을 2개로 늘려도 비용은 $0 입니다. 서브넷이 무료이기 때문입니다.
 #   EC2 를 2대로 늘리면 시간당 $0.0190 이 $0.0380 이 됩니다. 정확히 두 배입니다.
-#   오늘 배우는 것은 반복이고, 증설이 아닙니다.
-# 여러 서브넷 중 어디에 놓을지는 for_each 가 아니라 맵 인덱싱으로 고릅니다.
+#   이번 주제는 반복 구조 학습이지, 인프라 증설이 아닙니다.
+# 여러 서브넷 중 어디에 놓을지는 for_each 가 아니라 맵 인덱싱으로 선택합니다.
 # ---------------------------------------------------------------------------
 resource "aws_instance" "web" {
   ami           = data.aws_ami.al2023.id
   instance_type = var.instance_type
 
-  # 서브넷이 맵이므로 하나를 key 로 골라야 한다. 번호가 아니라 이름으로 고른다.
-  # var.primary_subnet_key 에 없는 key 를 넣으면 variables.tf 의 validation 이 먼저 걸러낸다.
+  # 서브넷이 맵이므로 하나를 key 로 선택해야 합니다. 번호가 아니라 이름으로 선택합니다.
+  # var.primary_subnet_key 에 없는 key 를 넣으면 variables.tf 의 validation 이 먼저 검증합니다.
   #
-  # values(aws_subnet.public)[0] 을 쓰지 않는 이유가 오늘 주제와 같다.
+  # values(aws_subnet.public)[0] 을 쓰지 않는 이유는 이번 주제와 같습니다.
   # values() 의 순서는 맵 key 정렬을 따르므로, 나중에 key "b" 를 추가하면
-  # [0] 이 가리키는 서브넷이 조용히 바뀌면서 인스턴스가 통째로 재생성된다.
+  # [0] 이 가리키는 서브넷이 의도하지 않게 바뀌면서 인스턴스가 전체적으로 재생성될 수 있습니다.
   subnet_id              = aws_subnet.public[var.primary_subnet_key].id
   vpc_security_group_ids = [aws_security_group.web.id]
 
-  # 퍼블릭 IP는 서브넷의 map_public_ip_on_launch 하나로만 통제한다.
+  # 퍼블릭 IP는 서브넷의 map_public_ip_on_launch 하나로만 통제합니다.
 
   # 루트 볼륨을 명시해 비용을 눈으로 확인한다. 8GiB gp3 ≈ $0.73/월.
   root_block_device {
@@ -91,7 +91,7 @@ resource "aws_instance" "web" {
     delete_on_termination = true
   }
 
-  # IMDSv2 강제. AL2023 기본값이지만 코드에 의도를 남긴다.
+  # IMDSv2 를 강제합니다. AL2023 기본값이지만 코드에 의도를 남깁니다.
   metadata_options {
     http_tokens = "required"
   }
