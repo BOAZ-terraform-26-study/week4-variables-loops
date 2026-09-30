@@ -2,8 +2,8 @@
 provider "aws" {
   region = var.region
 
-  # week3 에서는 이 안에 태그 다섯 줄을 직접 적었습니다.
-  # 이번 주에는 그 조립을 locals.tf 의 common_tags 한 곳으로 옮겼습니다.
+  # week3 에서는 이 안에 태그 다섯 줄을 직접 입력했습니다.
+  # 이번 주에는 그 조립을 locals.tf 의 common_tags 한 곳으로 옮깁니다.
   # default_tags 는 이 스택이 만드는 모든 리소스에 이 맵을 자동으로 붙입니다.
   #
   # Purpose = workload 표시가 scripts/check-leftover.sh 에서

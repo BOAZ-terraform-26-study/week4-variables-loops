@@ -10,13 +10,13 @@
 
 locals {
   # TODO(A-7) ⑤: name_prefix
-  #   week3 에서는 "${var.project_name}-vpc" 를 파일마다 반복해서 적었습니다.
-  #   접두어 규칙이 바뀌면 그 모든 자리를 고쳐야 했습니다. 이름을 한 곳에서 만듭니다.
+  #   week3 에서는 "${var.project_name}-vpc" 를 파일마다 반복해서 입력했습니다.
+  #   접두어 규칙이 바뀌면 그 모든 자리를 고쳐야 했습니다. 이름을 한 곳에서 정의합니다.
   #
   #   name_prefix = var.project_name
 
   # TODO(A-7) ⑥: common_tags
-  #   merge 는 맵 여러 개를 하나로 합칩니다. 같은 key 가 겹치면 뒤에 온 쪽이 이깁니다.
+  #   merge 는 맵 여러 개를 하나로 합칩니다. 같은 key 가 겹치면 뒤에 온 값이 적용됩니다.
   #   var.extra_tags 를 먼저 두고 리터럴 맵을 뒤에 두세요.
   #   순서를 뒤집으면 Purpose 를 tfvars 에서 덮어쓸 수 있게 되고,
   #   scripts/check-leftover.sh 의 분류가 깨집니다. 개념워크북 8번.

@@ -1,6 +1,6 @@
 # ---------------------------------------------------------------------------
 # outputs.tf: 리소스가 여러 개가 되면 output 도 값 하나로 끝나지 않습니다.
-# for 표현식으로 맵을 만들어 한 덩어리로 냅니다.
+# for 표현식으로 맵을 만들어 하나의 값으로 출력합니다.
 #
 # 실습워크북 B-3 을 따라 TODO ⑨⑩ 을 채우세요.
 # ---------------------------------------------------------------------------
@@ -10,7 +10,7 @@ output "vpc_id" {
   value       = aws_vpc.main.id
 }
 
-# TODO(B-3) ⑨: for 표현식으로 서브넷 ID 맵을 냅니다.
+# TODO(B-3) ⑨: for 표현식으로 서브넷 ID 맵을 출력합니다.
 #
 #   기본형:  { for k, v in <맵> : <새 key> => <새 value> }
 #   aws_subnet.public 은 for_each 로 만들어졌으므로 그 자체가 맵입니다.
@@ -47,7 +47,7 @@ output "instance_public_ip" {
   value       = aws_instance.web.public_ip
 }
 
-# TODO(B-3) ⑩: sensitive 는 전염됩니다.
+# TODO(B-3) ⑩: sensitive 는 전파됩니다.
 #
 #   var.my_ip 에 sensitive = true 를 붙였으므로(③), 그 값을 조립한 이 output 에도
 #   sensitive = true 가 있어야 합니다. 일부러 빼고 plan 을 한 번 돌려 보세요.

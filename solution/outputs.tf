@@ -1,6 +1,6 @@
 # ---------------------------------------------------------------------------
 # outputs.tf: 리소스가 여러 개가 되면 output 도 값 하나로 끝나지 않습니다.
-# for 표현식으로 맵을 만들어 한 덩어리로 냅니다.
+# for 표현식으로 맵을 만들어 하나의 값으로 출력합니다.
 # ---------------------------------------------------------------------------
 
 output "vpc_id" {
@@ -43,10 +43,10 @@ output "instance_public_ip" {
   value       = aws_instance.web.public_ip
 }
 
-# sensitive 는 전염됩니다.
-# var.my_ip 가 sensitive 이므로 그 값을 조립한 이 output 도 sensitive 여야 합니다.
-# 이 줄을 지우면 `Output refers to sensitive values` 오류로 plan 이 멈춥니다.
-# 값을 정말 봐야 하면 `terraform output -raw ssh_source_cidr` 로 꺼냅니다.
+# sensitive 는 전파됩니다.
+# var.my_ip 가 sensitive 이므로 그 값을 조립한 이 output 도 sensitive 를 명시해야 합니다.
+# 이 줄을 지우면 `Output refers to sensitive values` 오류로 plan 이 실패합니다.
+# 값을 반드시 확인해야 하면 `terraform output -raw ssh_source_cidr` 로 조회합니다.
 output "ssh_source_cidr" {
   description = "시큐리티 그룹이 22번을 열어준 대역. 본인 공인 IP 이므로 가려 둡니다"
   value       = "${var.my_ip}/32"
