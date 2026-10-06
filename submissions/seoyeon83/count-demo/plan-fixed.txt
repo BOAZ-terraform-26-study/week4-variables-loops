@@ -1,0 +1,30 @@
+terraform_data.by_count["alpha"]: Refreshing state... [id=6ecd9743-35ab-fab5-0860-471764e08d4e]
+terraform_data.by_count["charlie"]: Refreshing state... [id=bf28001b-ad0a-c32d-99d5-8023b902847c]
+terraform_data.by_count["bravo"]: Refreshing state... [id=56ddf300-2026-74dc-4e28-a4457f4a94e8]
+
+Terraform will perform the following actions:
+
+  # terraform_data.by_count[0] has moved to terraform_data.by_count["alpha"]
+    resource "terraform_data" "by_count" {
+        id               = "6ecd9743-35ab-fab5-0860-471764e08d4e"
+        # (3 unchanged attributes hidden)
+    }
+
+  # terraform_data.by_count[1] has moved to terraform_data.by_count["bravo"]
+    resource "terraform_data" "by_count" {
+        id               = "56ddf300-2026-74dc-4e28-a4457f4a94e8"
+        # (3 unchanged attributes hidden)
+    }
+
+  # terraform_data.by_count[2] has moved to terraform_data.by_count["charlie"]
+    resource "terraform_data" "by_count" {
+        id               = "bf28001b-ad0a-c32d-99d5-8023b902847c"
+        # (3 unchanged attributes hidden)
+    }
+
+Plan: 0 to add, 0 to change, 0 to destroy.
+
+─────────────────────────────────────────────────────────────────────────────
+
+Note: You didn't use the -out option to save this plan, so Terraform can't
+guarantee to take exactly these actions if you run "terraform apply" now.
